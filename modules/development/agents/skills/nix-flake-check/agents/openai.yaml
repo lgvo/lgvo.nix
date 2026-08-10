@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Flake Check"
+  short_description: "Run trusted offline Nix flake checks"
+  default_prompt: "Use $nix-flake-check to validate this trusted Nix flake offline."
