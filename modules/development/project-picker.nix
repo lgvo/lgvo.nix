@@ -100,7 +100,9 @@ in {
               default_name="$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
             fi
 
-            read -r -e -i "$default_name" -p "Project name: " name
+            # Avoid Bash Readline here: its key handling can treat Return as
+            # an escape sequence in terminals using enhanced keyboard modes.
+            IFS= read -r -p "Project name [$default_name]: " name
             name="''${name:-$default_name}"
 
             label="$name ($path)"
