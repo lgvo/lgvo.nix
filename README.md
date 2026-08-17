@@ -57,6 +57,18 @@ home-manager.users.lgvo = {
 The consumer owns identity, home path, state version, rebuild aliases, system prerequisites, and
 both pinned sibling revisions. `lgvo.nix` neither imports nor re-exports `nvim.nix`.
 
+On Linux, the `development` and `desktop` modes install Codex and Claude Code through their
+first-class Home Manager modules. Darwin leaves both packages to the machine-owned Homebrew
+configuration. Because Claude Code is unfree, Linux consumers must explicitly permit that package
+when constructing `pkgs`:
+
+```nix
+nixpkgs.config.allowUnfreePredicate = pkg:
+  builtins.elem (lib.getName pkg) [
+    "claude-code"
+  ];
+```
+
 ## Supported systems and validation
 
 All three modes have evaluation checks on:

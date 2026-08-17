@@ -97,6 +97,8 @@ in {
     && development.config.programs.direnv.enable
     && development.config.programs.direnv.nix-direnv.enable
     && !development.config.programs.ghostty.enable
+    && development.config.programs.claude-code.enable == pkgs.stdenv.isLinux
+    && development.config.programs.codex.enable == pkgs.stdenv.isLinux
     && development.config.programs.zsh.shellAliases.j == "just"
     && development.config.home.file ? ".codex/skills/nix-flake-check"
     && development.config.home.file ? ".claude/skills/nix-flake-check"
@@ -108,6 +110,8 @@ in {
     && hasPackage "opentofu" development
     && hasPackage "p" development
     && hasPackage "sops" development
+    && hasPackage "claude-code" development == pkgs.stdenv.isLinux
+    && hasPackage "codex" development == pkgs.stdenv.isLinux
     && lib.hasInfix "bind f display-popup" development.config.programs.tmux.extraConfig
   ));
 
@@ -123,6 +127,13 @@ in {
     )
     && expect "desktop must include agent tooling" (
       desktop.config.home.file ? ".codex/skills/nix-flake-check"
+    )
+    && expect "desktop must select agent CLIs by platform" (
+      desktop.config.programs.claude-code.enable
+      == pkgs.stdenv.isLinux
+      && desktop.config.programs.codex.enable == pkgs.stdenv.isLinux
+      && hasPackage "claude-code" desktop == pkgs.stdenv.isLinux
+      && hasPackage "codex" desktop == pkgs.stdenv.isLinux
     )
     && expect "desktop must not set EDITOR" (!(desktop.config.home.sessionVariables ? EDITOR))
     && expect "desktop must not set VISUAL" (!(desktop.config.home.sessionVariables ? VISUAL))

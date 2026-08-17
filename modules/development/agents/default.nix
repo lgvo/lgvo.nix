@@ -17,5 +17,10 @@ in {
       ".codex/skills/nix-flake-check".source = ./skills/nix-flake-check;
       ".claude/skills/nix-flake-check".source = ./skills/nix-flake-check;
     };
+
+    programs = lib.mkIf pkgs.stdenv.isLinux {
+      claude-code.enable = true;
+      codex.enable = true;
+    };
   };
 }
