@@ -18,7 +18,7 @@ in {
       ".claude/skills/nix-flake-check".source = ./skills/nix-flake-check;
     };
 
-    programs = lib.mkIf pkgs.stdenv.isLinux {
+    programs = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       claude-code.enable = true;
       codex.enable = true;
     };

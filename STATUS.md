@@ -3,7 +3,7 @@
 **Read this first for current work.** Stable conventions and safety rules belong in
 [`AGENTS.md`](AGENTS.md), not here. Verify this file against `git status` before relying on it.
 
-Last verified: **2026-08-17**, branch **`main`**.
+Last verified: **2026-08-18**, branch **`main`**.
 
 ## Current work
 
@@ -18,7 +18,7 @@ Last verified: **2026-08-17**, branch **`main`**.
 
 ## Validation state
 
-- Alejandra formatting and Statix lint pass as of 2026-08-17.
+- Alejandra formatting and Statix lint pass as of 2026-08-18.
 - All native `aarch64-darwin` checks pass, including the corrected Ghostty theme assertion.
 - Evaluation fixtures pass for every mode on `aarch64-darwin` and `x86_64-linux`.
 - `just check` now builds checks for the host platform and evaluates all supported platforms
