@@ -3,7 +3,7 @@
 **Read this first for current work.** Stable conventions and safety rules belong in
 [`AGENTS.md`](AGENTS.md), not here. Verify this file against `git status` before relying on it.
 
-Last verified: **2026-08-18**, branch **`main`**.
+Last verified: **2026-08-27**, branch **`main`**.
 
 ## Current work
 
@@ -11,16 +11,14 @@ Last verified: **2026-08-18**, branch **`main`**.
 - `homeManagerModules.default` exposes cumulative `minimal`, `development`, and `desktop` modes.
 - Shared Home Manager sources were classified from `/private/etc/nix-darwin/home` without copying
   nixvim, Neovim configuration, editor variables, or machine-owned values.
-- Development and desktop modes install Codex and Claude Code on Linux through Home Manager;
-  Darwin leaves both packages to machine-owned Homebrew configuration.
 - The existing editor configuration remains an independent sibling at
   `https://github.com/lgvo/nvim.nix`.
 
 ## Validation state
 
-- Alejandra formatting and Statix lint pass as of 2026-08-18.
-- All native `aarch64-darwin` checks pass, including the corrected Ghostty theme assertion.
-- Evaluation fixtures pass for every mode on `aarch64-darwin` and `x86_64-linux`.
+- Alejandra formatting and Statix lint pass as of 2026-08-27.
+- Post-removal evaluation is pending because the sandboxed offline check could not access Nix's
+  fetcher cache database.
 - `just check` now builds checks for the host platform and evaluates all supported platforms
   without attempting to build foreign-platform derivations.
 

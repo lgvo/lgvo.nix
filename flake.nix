@@ -54,13 +54,7 @@
           homeModule
           system
           ;
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfreePredicate = pkg:
-            system
-            == "x86_64-linux"
-            && lib.getName pkg == "claude-code";
-        };
+        pkgs = import nixpkgs {inherit system;};
       });
 
     devShells = forAllSystems (system: templateDevShells.${system});

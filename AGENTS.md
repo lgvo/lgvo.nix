@@ -18,7 +18,7 @@ The flake exports `homeManagerModules.default`, with cumulative modes selected t
 
 - `modules/minimal/` owns portable shell, Git, tmux, and baseline CLI configuration.
 - `modules/development/` owns language tooling, direnv/forgit, the project picker, cloud/IaC
-  packages, and personal agent tooling.
+  packages, and other development tools.
 - `modules/desktop/` owns graphical user preferences and platform-specific desktop behavior.
 - `tests/` owns evaluation fixtures for every supported system and mode.
 - `flake.nix` wires the public module, checks, and development shells.
@@ -27,8 +27,8 @@ Consumers own Home Manager integration, identity, home directory, state version,
 rebuild aliases, system prerequisites, and the pinned input revision. This repository does not own
 Neovim; `nvim.nix` is an independent sibling flake selected directly by machine repositories.
 
-Never edit generated copies under paths such as `~/.config`, `~/.codex`, `~/.claude`, or the Home
-Manager profile. Edit their source modules here.
+Never edit generated copies under paths such as `~/.config` or the Home Manager profile. Edit
+their source modules here.
 
 ## Division of responsibility
 
@@ -37,22 +37,19 @@ Agents may:
 - inspect and edit repository source and documentation when asked;
 - run read-only diagnostics;
 - run `just fmt`, `just fmt-check`, and `just lint` directly;
-- run Nix evaluation only through `/etc/profiles/per-user/lgvo/bin/agent-nix-check` when locked
-  inputs and required store material are already available locally;
 - perform local Git operations when explicitly requested, including creating or switching
   branches, staging changes, committing, merging, rebasing, resetting, restoring, or stashing.
 
 The user runs every Git operation that contacts a remote, including fetch, pull, push, clone,
 `ls-remote`, remote changes, and submodule network operations. Agents do not request network or
-elevated access for remote Git work. The user also runs anything that mutates the live machine or
-Nix store, including system rebuilds, `nix flake update`/`lock`, general `nix build`/`run`, direct
-`nix flake check`, Homebrew operations, and System Settings changes. The agent Nix wrapper is
-offline and lock-preserving, but it can still need missing store material. If that happens, or a
-sandbox or permission boundary blocks a mutating command outside local Git, stop and hand the
+elevated access for remote Git work. The user also runs all Nix evaluation and anything that
+mutates the live machine or Nix store, including system rebuilds, `nix flake update`/`lock`,
+general `nix build`/`run`, `nix flake check`, Homebrew operations, and System Settings changes. If
+a sandbox or permission boundary blocks a mutating command outside local Git, stop and hand the
 exact step to the user. Do not retry with elevation, broader permissions, environment overrides,
 alternate store paths, or direct commands. Agents may request approval for an exact local Git
-command or the exact immutable `agent-nix-check` executable; do not request broad persistent
-approval for the Git executable or approval for an underlying `nix` command.
+command; do not request broad persistent approval for the Git executable or approval for an
+underlying `nix` command.
 
 Manual macOS work that Nix cannot own—Accessibility or Full Disk Access grants, Mission Control
 shortcuts, Keychain, biometrics, FileVault, SIP, Gatekeeper, and similar settings—must be returned
@@ -113,16 +110,15 @@ The dev shell comes from the locked `dev-templates` input. Available recipes are
 - `just validate` — format and then run lint and flake validation.
 
 Agents must not run `just check` or `just validate` because they invoke Nix directly. Do not run
-checks that need missing network or store material. Agents may run the immutable offline
-`agent-nix-check` wrapper after a valid lock file exists. Report any check you could not run. The
-user performs direct checks and validates the complete consuming machine before activation.
+checks that need missing network or store material. Report Nix evaluation as not run. The user
+performs direct checks and validates the complete consuming machine before activation.
 
 ## Definition of done
 
 1. Inspect current status and existing ownership.
 2. Make the smallest coherent declarative change while preserving unrelated work.
-3. Format, lint, and evaluate all three modes on `aarch64-darwin` and `x86_64-linux`, within the
-   boundaries above.
+3. Format and lint within the boundaries above; leave evaluation of all three modes on
+   `aarch64-darwin` and `x86_64-linux` to the user.
 4. Confirm the public module has no nixvim dependency or machine-owned values.
 5. If explicitly requested, commit only the selected changes.
 6. Report changed files, validation results, and anything not run.
