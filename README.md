@@ -1,8 +1,10 @@
 # lgvo.nix
 
 `lgvo.nix` is a reusable personal Home Manager configuration for Darwin and Linux. It exports one
-stable module and leaves machine identity, system configuration, and the independently extracted
-[`nvim.nix`](https://github.com/lgvo/nvim.nix) editor configuration to consumer repositories.
+stable module, including a default personal Git identity, and leaves contextual identity overrides,
+system configuration, and the independently extracted
+[`nvim.nix`](https://github.com/lgvo/nvim.nix) editor configuration to consumer repositories. See
+[`PROJECT.md`](PROJECT.md) for the project's durable direction and documentation authority.
 
 ## Public contract
 
@@ -54,8 +56,10 @@ home-manager.users.lgvo = {
 };
 ```
 
-The consumer owns identity, home path, state version, rebuild aliases, system prerequisites, and
-both pinned sibling revisions. `lgvo.nix` neither imports nor re-exports `nvim.nix`.
+The module provides the default personal Git identity. Consumers own contextual overrides, such as
+a different work identity, along with the home path, state version, rebuild aliases, system
+prerequisites, and both pinned sibling revisions. `lgvo.nix` neither imports nor re-exports
+`nvim.nix`.
 
 ## Supported systems and validation
 

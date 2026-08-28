@@ -3,10 +3,10 @@
 ## Start here
 
 This repository provides a reusable personal Home Manager module for Darwin and Linux. Read
-[`STATUS.md`](STATUS.md) for current work, then inspect `git status` before acting. Repository
-writes and local Git work are allowed when requested; the user owns Git remote operations,
-Nix-store or live-machine mutation, secrets, security posture, and manual operating-system
-changes.
+[`PROJECT.md`](PROJECT.md) for durable direction and authority, then [`STATUS.md`](STATUS.md) for
+current work, and inspect `git status` before acting. Repository writes and local Git work are
+allowed when requested; the user owns Git remote operations, Nix-store or live-machine mutation,
+secrets, security posture, and manual operating-system changes.
 
 Questions are questions, not work orders. When the user asks for an assessment or raises a point
 for discussion, answer it first. Edit only when the user clearly asks for a change.
@@ -23,7 +23,8 @@ The flake exports `homeManagerModules.default`, with cumulative modes selected t
 - `tests/` owns evaluation fixtures for every supported system and mode.
 - `flake.nix` wires the public module, checks, and development shells.
 
-Consumers own Home Manager integration, identity, home directory, state version, machine paths,
+This repository owns shared personal defaults, including the default Git identity. Consumers own
+contextual overrides, Home Manager integration, home directory, state version, machine paths,
 rebuild aliases, system prerequisites, and the pinned input revision. This repository does not own
 Neovim; `nvim.nix` is an independent sibling flake selected directly by machine repositories.
 
@@ -90,11 +91,13 @@ then hand value provisioning to the user.
   OS selector.
 - Preserve cumulative modes: `development` includes `minimal`, and `desktop` includes
   `development`.
+- Keep shared defaults override-friendly when machine or context can legitimately require a
+  different value.
 - Check for an existing owner before adding settings; extend it rather than duplicating or
   silently overriding configuration.
 - Preserve unrelated staged, unstaged, and untracked user changes. Never revert or overwrite them.
-- Never add nixvim, Neovim configuration, editor variables, machine identity, state versions,
-  repository paths, rebuild commands, or system configuration to this flake.
+- Never add nixvim, Neovim configuration, editor variables, machine-specific identity, state
+  versions, repository paths, rebuild commands, or system configuration to this flake.
 - Every accepted change should eventually be committed, but agents create commits only when the
   user explicitly requests one. Destructive or history-rewriting local Git operations also
   require an explicit request. Never perform remote Git work.
@@ -119,7 +122,8 @@ performs direct checks and validates the complete consuming machine before activ
 2. Make the smallest coherent declarative change while preserving unrelated work.
 3. Format and lint within the boundaries above; leave evaluation of all three modes on
    `aarch64-darwin` and `x86_64-linux` to the user.
-4. Confirm the public module has no nixvim dependency or machine-owned values.
+4. Confirm the public module has no nixvim dependency or consumer-owned machine values, and that
+   context-sensitive shared defaults remain override-friendly.
 5. If explicitly requested, commit only the selected changes.
 6. Report changed files, validation results, and anything not run.
 7. Give the user exact consumer validation/apply commands and any manual checklist that remains.
